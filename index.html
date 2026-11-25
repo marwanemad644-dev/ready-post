@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+</head>
+<body>
+<title>بوست جاهز</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800&family=Tajawal:wght@400;500;700&display=swap">
+<style>
+/* التخطيط: عمود نموذج بجانب عمود نتائج على الشاشات الواسعة، ويتحولان لعمود واحد على الموبايل */
+:root {
+  --bg: #F4F5F9;
+  --surface: #FFFFFF;
+  --tint: #EDEFF8;
+  --ink: #14183A;
+  --muted: #565C80;
+  --line: #D6D9EA;
+  --primary: #2B3A9E;
+  --on-primary: #FFFFFF;
+  --accent: #FFC93C;
+  --on-accent: #14183A;
+  --ok: #1B6E46;
+  --err: #B3261E;
+  --font-display: "Cairo", "Segoe UI", Tahoma, "Noto Naskh Arabic", sans-serif;
+  --font-body: "Tajawal", "Segoe UI", Tahoma, "Noto Naskh Arabic", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0E1126;
+    --surface: #171B38;
+    --tint: #1F2446;
+    --ink: #EDEFF9;
+    --muted: #A6ACD2;
+    --line: #2C3260;
+    --primary: #8FA0FF;
+    --on-primary: #0E1126;
+    --ok: #5FD39A;
+    --err: #FF9C94;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0E1126;
+  --surface: #171B38;
+  --tint: #1F2446;
+  --ink: #EDEFF9;
+  --muted: #A6ACD2;
+  --line: #2C3260;
+  --primary: #8FA0FF;
+  --on-primary: #0E1126;
+  --ok: #5FD39A;
+  --err: #FF9C94;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { direction: rtl; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.75;
+  direction: rtl;
+}
+.app { min-height: 100%; }
+.wrap {
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--font-display); margin: 0; line-height: 1.35; text-wrap: balance; }
+h1 { font-size: clamp(1.6rem, 4.6vw, 2.35rem); font-weight: 800; }
+h2 { font-size: 1.3rem; font-weight: 700; }
+h3 { font-size: 1.02rem; font-weight: 700; }
+p { margin: 0; }
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+/* الشريط العلوي */
+.top { border-bottom: 1px solid var(--line); background: var(--surface); }
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; }
+.tag { width: 22px; height: 22px; background: var(--accent); border-radius: 6px 6px 6px 2px; position: relative; transform: rotate(-12deg); display: inline-block; }
+.tag::after { content: ""; position: absolute; inset-inline-start: 5px; top: 5px; width: 5px; height: 5px; border-radius: 50%; background: var(--surface); }
+.plan { font-size: .875rem; font-weight: 700; padding: 3px 12px; border-radius: 999px; border: 1.5px solid var(--line); color: var(--muted); white-space: nowrap; }
+.plan.on { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+
+.intro { display: grid; gap: 10px; padding-block: 32px 22px; max-width: 46rem; }
+.intro p { color: var(--muted); font-size: 1.05rem; }
+
+.grid { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 24px; align-items: start; padding-bottom: 28px; }
+@media (max-width: 860px) { .grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* النموذج */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: grid; gap: 16px; min-width: 0; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; align-items: end; }
+label, .legend { font-weight: 700; font-size: .95rem; }
+.opt { color: var(--muted); font-weight: 400; }
+.hint { color: var(--muted); font-size: .875rem; line-height: 1.6; }
+input[type="text"], select {
+  width: 100%; min-width: 0; height: 46px; padding: 0 12px;
+  border: 1.5px solid var(--line); border-radius: 10px;
+  background: var(--surface); color: var(--ink); font: inherit;
+}
+input[type="text"]::placeholder { color: var(--muted); opacity: .8; }
+input[aria-invalid="true"] { border-color: var(--err); }
+.ltr { direction: ltr; text-align: right; }
+.err { color: var(--err); font-size: .875rem; line-height: 1.5; }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: grid; gap: 6px; }
+.seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.seg label { position: relative; }
+.seg input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.seg span { display: block; text-align: center; padding: 9px 6px; border: 1.5px solid var(--line); border-radius: 10px; font-weight: 500; font-size: .92rem; line-height: 1.4; }
+.seg input:checked + span { border-color: var(--primary); background: var(--tint); font-weight: 700; }
+.seg input:focus-visible + span { outline: 3px solid var(--primary); outline-offset: 2px; }
+.check { display: flex; gap: 10px; align-items: flex-start; font-weight: 500; }
+.check input { width: 20px; height: 20px; margin: 4px 0 0; flex: none; accent-color: var(--primary); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 22px; border-radius: 10px; border: 0; cursor: pointer;
+  background: var(--primary); color: var(--on-primary);
+  font-family: var(--font-display); font-weight: 700; font-size: 1rem; text-decoration: none;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn.small { min-height: 36px; padding: 0 14px; font-size: .9rem; background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.btn.small:hover { background: var(--tint); filter: none; }
+
+/* النتائج */
+.results { display: grid; gap: 28px; min-width: 0; }
+.group { display: grid; gap: 12px; }
+.group-head { display: grid; gap: 2px; }
+.cards { display: grid; gap: 12px; }
+.note { background: var(--tint); border-radius: 10px; padding: 10px 14px; font-size: .95rem; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 10px; min-width: 0; }
+.card-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.card pre {
+  margin: 0; padding: 12px 14px; background: var(--tint); border-radius: 8px;
+  font-family: var(--font-body); font-size: 1rem; line-height: 1.85;
+  white-space: pre-wrap; overflow-wrap: anywhere; direction: rtl;
+}
+.card.locked { border-style: dashed; background: transparent; padding: 10px 14px; color: var(--muted); }
+.lock-badge { font-size: .8rem; font-weight: 700; color: var(--muted); border: 1.5px solid var(--line); border-radius: 999px; padding: 1px 10px; white-space: nowrap; }
+.note.cta { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+/* قسم التفعيل */
+.unlock { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 24px; display: grid; gap: 18px; margin-bottom: 28px; }
+.group-head.spaced { margin-bottom: 18px; }
+.unlock-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+.buy, .redeem { display: grid; gap: 12px; align-content: start; min-width: 0; }
+.sticker { justify-self: start; background: var(--accent); color: var(--on-accent); font-family: var(--font-display); font-weight: 800; font-size: 1.25rem; padding: 4px 16px; border-radius: 8px; transform: rotate(-2deg); }
+.num { direction: ltr; unicode-bidi: isolate; user-select: all; font-weight: 700; }
+.code-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.code-row input { flex: 1 1 180px; }
+.status { font-size: .95rem; min-height: 1.5em; }
+.status.ok { color: var(--ok); font-weight: 700; }
+.status.bad { color: var(--err); }
+.done { display: grid; gap: 6px; }
+
+.foot { color: var(--muted); font-size: .875rem; padding-block: 8px 36px; max-width: 46rem; }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<div class="app" dir="rtl" lang="ar">
+  <header class="top">
+    <div class="wrap bar">
+      <div class="brand"><span class="tag" aria-hidden="true"></span><span>بوست جاهز</span></div>
+      <span class="plan" id="plan">النسخة المجانية</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="intro">
+      <h1>منشورك وردودك على العملاء، جاهزة في ثواني</h1>
+      <p>اكتب اسم المنتج وسعره، وخد منشورات فيسبوك وإنستجرام وردود واتساب بالعامية المصرية. راجع الكلام وعدّل عليه قبل ما تنشره.</p>
+    </section>
+
+    <div class="grid">
+      <form id="form" class="panel" novalidate aria-label="بيانات المنتج">
+        <div class="field">
+          <label for="product">اسم المنتج</label>
+          <input type="text" id="product" maxlength="80" value="فستان صيفي" autocomplete="off" aria-describedby="err-product">
+          <p class="err" id="err-product" role="alert" hidden></p>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="price">السعر بالجنيه</label>
+            <input type="text" id="price" inputmode="decimal" value="350" autocomplete="off" aria-describedby="err-price">
+            <p class="err" id="err-price" role="alert" hidden></p>
+          </div>
+          <div class="field">
+            <label for="oldPrice">السعر قبل الخصم <span class="opt">(اختياري)</span></label>
+            <input type="text" id="oldPrice" inputmode="decimal" value="500" autocomplete="off" aria-describedby="err-oldPrice">
+            <p class="err" id="err-oldPrice" role="alert" hidden></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="category">نوع المنتج</label>
+          <select id="category" aria-describedby="err-category">
+            <option value="clothes">ملابس</option>
+            <option value="food">أكل منزلي</option>
+            <option value="accessories">إكسسوارات</option>
+            <option value="beauty">مستحضرات تجميل</option>
+            <option value="electronics">إكسسوارات موبايل وإلكترونيات</option>
+            <option value="home">أدوات منزلية وديكور</option>
+          </select>
+          <p class="err" id="err-category" role="alert" hidden></p>
+        </div>
+
+        <fieldset>
+          <legend class="legend">أسلوب الكلام</legend>
+          <div class="seg">
+            <label><input type="radio" name="tone" value="friendly" checked><span>ودّي بالعامية</span></label>
+            <label><input type="radio" name="tone" value="formal"><span>رسمي</span></label>
+            <label><input type="radio" name="tone" value="hype"><span>حماسي</span></label>
+          </div>
+          <p class="err" id="err-tone" role="alert" hidden></p>
+        </fieldset>
+
+        <div class="row">
+          <div class="field">
+            <label for="shipping">الشحن</label>
+            <select id="shipping" aria-describedby="err-shipping">
+              <option value="free">توصيل مجاني</option>
+              <option value="paid">الشحن بمصاريف</option>
+              <option value="pickup">استلام من المكان</option>
+            </select>
+            <p class="err" id="err-shipping" role="alert" hidden></p>
+          </div>
+          <div class="field" id="shippingCostField" hidden>
+            <label for="shippingCost">مصاريف الشحن <span class="opt">(اختياري)</span></label>
+            <input type="text" id="shippingCost" inputmode="decimal" placeholder="مثال: 50" autocomplete="off" aria-describedby="err-shippingCost">
+            <p class="err" id="err-shippingCost" role="alert" hidden></p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="whatsapp">رقم الواتساب في المنشور <span class="opt">(اختياري)</span></label>
+          <input type="text" id="whatsapp" class="ltr" inputmode="tel" placeholder="01012345678" autocomplete="off" aria-describedby="err-whatsapp">
+          <p class="err" id="err-whatsapp" role="alert" hidden></p>
+        </div>
+
+        <div class="field">
+          <label class="check"><input type="checkbox" id="limited"><span>الكمية محدودة فعلاً</span></label>
+          <p class="hint">فعّلها لو ده صحيح بس، عشان المنشور ميقولش حاجة مش حقيقية.</p>
+        </div>
+
+        <button type="submit" class="btn">جهّز المنشورات</button>
+      </form>
+
+      <section class="results" aria-live="polite" aria-label="النتائج">
+        <p class="note" id="example-note">ده مثال جاهز. غيّر البيانات في النموذج واضغط «جهّز المنشورات» عشان تاخد منشورك.</p>
+        <div class="note cta" id="unlock-cta">
+          <span>باقي المنشورات والردود مقفولة. افتحها بكود التفعيل.</span>
+          <button type="button" class="btn small" id="goto-unlock">افتح الكل</button>
+        </div>
+        <div class="group">
+          <div class="group-head"><h2>منشورات فيسبوك وإنستجرام</h2></div>
+          <div class="cards" id="posts"></div>
+        </div>
+        <div class="group">
+          <div class="group-head">
+            <h2>ردود جاهزة للعملاء</h2>
+            <p class="hint">راجع كل رد قبل ما تبعته. مثلاً لو المنتج مش متاح، غيّر الجملة.</p>
+          </div>
+          <div class="cards" id="replies"></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="unlock" id="unlock" aria-labelledby="unlock-title">
+      <div class="done" id="unlock-done" hidden>
+        <h2>تم التفعيل</h2>
+        <p>كل المنشورات والردود مفتوحة. اكتب بيانات أي منتج جديد واضغط «جهّز المنشورات».</p>
+      </div>
+      <div id="unlock-open">
+        <div class="group-head spaced">
+          <h2 id="unlock-title">افتح كل المنشورات والردود</h2>
+          <p class="hint">النسخة المجانية فيها منشور واحد ورد واحد لكل منتج. كود التفعيل بيفتح كل المنشورات وكل الردود لأي عدد منتجات، مدى الحياة.</p>
+        </div>
+        <div class="unlock-grid">
+          <div class="buy">
+            <span class="sticker" id="price-sticker"></span>
+            <p>دفعة واحدة، من غير اشتراك شهري. ابعت لنا على واتساب ونرد عليك بطريقة الدفع، وبعد التحويل بيوصلك الكود.</p>
+            <a class="btn" id="wa-link" href="#" target="_blank" rel="noopener">اطلب الكود على واتساب</a>
+            <p class="hint">أو ابعت على الرقم: <span class="num" id="wa-num"></span></p>
+          </div>
+          <form class="redeem" id="code-form" novalidate>
+            <label for="code">عندك كود تفعيل؟ اكتبه هنا</label>
+            <div class="code-row">
+              <input type="text" id="code" class="ltr" placeholder="PG-XXXX-XXXX-XXXX" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-describedby="code-status">
+              <button type="submit" class="btn">فعّل</button>
+            </div>
+            <p class="status" id="code-status" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <p class="foot">الأداة بتجهز لك صياغة جاهزة، وإنت المسؤول عن صحة المعلومات اللي فيها زي السعر والمقاس والتوفر. راجعها قبل النشر.</p>
+  </main>
+</div>
+
+<script>
+/* بوست جاهز: منطق الأداة (يشتغل في المتصفح وفي node للاختبار) */
+(function (root, factory) {
+  var api = factory();
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  else root.PG = api;
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  /* ---------- أدوات الأرقام ---------- */
+  function toLatinDigits(s) {
+    return String(s == null ? '' : s)
+      .replace(/[٠-٩]/g, function (d) { return String(d.charCodeAt(0) - 0x0660); })
+      .replace(/[۰-۹]/g, function (d) { return String(d.charCodeAt(0) - 0x06F0); });
+  }
+
+  // يرجع رقم أو null لو القيمة فاضية، ويرجع NaN لو القيمة غلط
+  function parseNumber(raw) {
+    var s = toLatinDigits(raw).trim();
+    if (s === '') return null;
+    s = s.replace(/[٬,،\s]/g, '').replace(/٫/g, '.');
+    if (!/^\d+(\.\d+)?$/.test(s)) return NaN;
+    return Number(s);
+  }
+
+  function fmt(n) {
+    var r = Math.round(n * 100) / 100;
+    var parts = r.toFixed(2).split('.');
+    var int = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    if (parts[1] === '00') return int;
+    return int + '.' + parts[1].replace(/0$/, '');
+  }
+
+  // رقم واتساب مصري: يرجع رقم بصيغة 01xxxxxxxxx أو null لو فاضي أو '' لو غلط
+  function normalizeWhatsapp(raw) {
+    var d = toLatinDigits(raw).replace(/[^\d]/g, '');
+    if (d === '') return null;
+    if (d.indexOf('0020') === 0) d = d.slice(4);
+    else if (d.indexOf('20') === 0 && d.length === 12) d = d.slice(2);
+    if (d.length === 10 && d.charAt(0) === '1') d = '0' + d;
+    return /^01[0125]\d{8}$/.test(d) ? d : '';
+  }
+
+  function toWaNumber(local) { return '20' + String(local).slice(1); }
+
+  /* ---------- SHA-256 بدون اعتماد على المتصفح ---------- */
+  var SHA_K = null, SHA_H = null;
+  function shaInit() {
+    if (SHA_K) return;
+    var primes = [];
+    for (var n = 2; primes.length < 64; n++) {
+      var ok = true;
+      for (var i = 0; i < primes.length; i++) {
+        var p = primes[i];
+        if (p * p > n) break;
+        if (n % p === 0) { ok = false; break; }
+      }
+      if (ok) primes.push(n);
+    }
+    var frac = function (x) { return x - Math.floor(x); };
+    SHA_K = primes.map(function (p) { return Math.floor(frac(Math.cbrt(p)) * 4294967296) >>> 0; });
+    SHA_H = primes.slice(0, 8).map(function (p) { return Math.floor(frac(Math.sqrt(p)) * 4294967296) >>> 0; });
+  }
+
+  function sha256Hex(msg) {
+    shaInit();
+    var data = new TextEncoder().encode(String(msg));
+    var l = data.length;
+    var total = ((l + 9 + 63) >> 6) << 6;
+    var buf = new Uint8Array(total);
+    buf.set(data);
+    buf[l] = 0x80;
+    var dv = new DataView(buf.buffer);
+    dv.setUint32(total - 8, Math.floor(l / 0x20000000));
+    dv.setUint32(total - 4, (l << 3) >>> 0);
+    var H = SHA_H.slice();
+    var w = new Uint32Array(64);
+    var rotr = function (x, k) { return (x >>> k) | (x << (32 - k)); };
+    for (var off = 0; off < total; off += 64) {
+      for (var i = 0; i < 16; i++) w[i] = dv.getUint32(off + i * 4);
+      for (i = 16; i < 64; i++) {
+        var s0 = rotr(w[i - 15], 7) ^ rotr(w[i - 15], 18) ^ (w[i - 15] >>> 3);
+        var s1 = rotr(w[i - 2], 17) ^ rotr(w[i - 2], 19) ^ (w[i - 2] >>> 10);
+        w[i] = (w[i - 16] + s0 + w[i - 7] + s1) >>> 0;
+      }
+      var a = H[0], b = H[1], c = H[2], d = H[3], e = H[4], f = H[5], g = H[6], h = H[7];
+      for (i = 0; i < 64; i++) {
+        var S1 = rotr(e, 6) ^ rotr(e, 11) ^ rotr(e, 25);
+        var ch = (e & f) ^ (~e & g);
+        var t1 = (h + S1 + ch + SHA_K[i] + w[i]) >>> 0;
+        var S0 = rotr(a, 2) ^ rotr(a, 13) ^ rotr(a, 22);
+        var maj = (a & b) ^ (a & c) ^ (b & c);
+        var t2 = (S0 + maj) >>> 0;
+        h = g; g = f; f = e; e = (d + t1) >>> 0; d = c; c = b; b = a; a = (t1 + t2) >>> 0;
+      }
+      H[0] = (H[0] + a) >>> 0; H[1] = (H[1] + b) >>> 0; H[2] = (H[2] + c) >>> 0; H[3] = (H[3] + d) >>> 0;
+      H[4] = (H[4] + e) >>> 0; H[5] = (H[5] + f) >>> 0; H[6] = (H[6] + g) >>> 0; H[7] = (H[7] + h) >>> 0;
+    }
+    return H.map(function (x) { return x.toString(16).padStart(8, '0'); }).join('');
+  }
+
+  /* ---------- أكواد التفعيل ---------- */
+  var CODE_PREFIX = 'PG';
+  var CODE_SALT = 'postgahez:';
+
+  function normalizeCode(s) {
+    return toLatinDigits(s).toUpperCase().replace(/[^A-Z0-9]/g, '');
+  }
+  function codeHash(s) { return sha256Hex(CODE_SALT + normalizeCode(s)); }
+  function isValidCode(s, hashes) {
+    var n = normalizeCode(s);
+    if (n.length !== 14 || n.indexOf(CODE_PREFIX) !== 0) return false;
+    return hashes.indexOf(codeHash(n)) !== -1;
+  }
+
+  /* ---------- محتوى المنتجات ---------- */
+  var CATEGORIES = {
+    clothes:     { label: 'ملابس',                 tags: ['ملابس', 'موضة', 'ستايل'],
+                   line: { friendly: 'قولنا مقاسك ولونك وإحنا نجهزلك الطلب.', formal: 'برجاء تحديد المقاس واللون المطلوبين عند الطلب.', hype: 'اختار مقاسك ولونك وسيب الباقي علينا!' } },
+    food:        { label: 'أكل منزلي',             tags: ['أكل_بيتي', 'طبخ_بيتي', 'أكل_منزلي'],
+                   line: { friendly: 'قولنا الكمية اللي محتاجها وميعاد الاستلام.', formal: 'برجاء تحديد الكمية وموعد التسليم المطلوب.', hype: 'اطلب كمية تكفيك أنت وعيلتك!' } },
+    accessories: { label: 'إكسسوارات',             tags: ['إكسسوارات', 'هدايا', 'ستايل'],
+                   line: { friendly: 'ابعتلنا لو عايز تشوف صور أكتر للمنتج.', formal: 'يمكنكم طلب صور إضافية للمنتج.', hype: 'اطلب صور أكتر وشوف بنفسك!' } },
+    beauty:      { label: 'مستحضرات تجميل',        tags: ['مستحضرات_تجميل', 'عناية', 'جمال'],
+                   line: { friendly: 'اسألنا عن أي تفاصيل قبل ما تطلب.', formal: 'يسعدنا الإجابة عن أي استفسار قبل الطلب.', hype: 'اسألنا عن أي حاجة، إحنا في الخدمة!' } },
+    electronics: { label: 'إكسسوارات موبايل وإلكترونيات', tags: ['اكسسوارات_موبايل', 'إلكترونيات', 'موبايل'],
+                   line: { friendly: 'ابعتلنا لو عايز تعرف تفاصيل أكتر عن المنتج.', formal: 'للاستفسار عن مواصفات المنتج برجاء مراسلتنا.', hype: 'اسأل عن التفاصيل واطلب بثقة!' } },
+    home:        { label: 'أدوات منزلية وديكور',   tags: ['أدوات_منزلية', 'مستلزمات_البيت', 'ديكور'],
+                   line: { friendly: 'ابعتلنا على الخاص لو عايز تعرف أكتر.', formal: 'للمزيد من التفاصيل برجاء مراسلتنا على الخاص.', hype: 'ابعتلنا واعرف كل التفاصيل!' } }
+  };
+
+  var TONES = {
+    friendly: { label: 'ودّي (عامية مصرية)', mark: '✨', hi: 'أهلاً بيك 🌷',
+      r: {
+        availQ: 'تحب أسجلك الطلب؟', contQ: 'تحب أكمل معاك الطلب؟',
+        avail: function (p, pr) { return p + ' متاح وسعره ' + pr + ' جنيه'; },
+        priceIs: function (p, pr) { return 'سعر ' + p + ': ' + pr + ' جنيه'; },
+        shipFree: 'التوصيل مجاني.',
+        shipPickup: 'الاستلام من مكاننا، ابعتلي وأبعتلك العنوان ومواعيد الاستلام.',
+        shipAdd: function (c) { return 'الشحن ' + c + ' جنيه، وبيتضاف على سعر المنتج.'; },
+        shipUnknown: 'مصاريف الشحن بتتحدد حسب العنوان، ابعتلي المحافظة والمنطقة وأقولك المبلغ.',
+        discYes: function (o, pr) { return 'السعر ده بعد الخصم أصلاً (كان ' + o + ' جنيه) وبقى ' + pr + ' جنيه.'; },
+        discNo: function (pr) { return 'شكرًا لذوقك، ' + pr + ' جنيه هو السعر الحالي للمنتج.'; },
+        bulk: 'لو هتطلب أكتر من قطعة قولي العدد وأشوفلك أفضل سعر ممكن.',
+        orderIntro: function (p) { return 'تمام، عشان نأكد طلب ' + p + ' ابعتلي:'; },
+        follow: function (p) { return ['حبيت أرجع أسألك بخصوص ' + p + '.', 'لو ليك أي سؤال أو عايزين نكمل الطلب، أنا موجود.']; }
+      },
+      cta: 'ابعتلنا رسالة على الخاص وهنجهزلك طلبك.',
+      hook: function (p) { return 'لسه بتدور على ' + p + '؟'; },
+      head3: function (p) { return 'اطلب ' + p + ' دلوقتي'; },
+      limited: 'الكمية محدودة، الحق احجز.',
+      free: 'التوصيل مجاني 🚚', pickup: 'الاستلام من مكاننا.',
+      paid: function (c) { return 'مصاريف الشحن ' + c + ' جنيه.'; },
+      paidUnknown: 'مصاريف الشحن بتتحدد حسب العنوان.',
+      contact: function (w) { return 'واتساب: ' + w; } },
+    formal: { label: 'رسمي (فصحى مبسطة)', mark: '', hi: 'أهلاً وسهلاً بحضرتك',
+      r: {
+        availQ: 'هل تودون إتمام الطلب؟', contQ: 'هل تودون إتمام الطلب؟',
+        avail: function (p, pr) { return 'المنتج (' + p + ') متاح بسعر ' + pr + ' جنيه'; },
+        priceIs: function (p, pr) { return 'سعر ' + p + ': ' + pr + ' جنيه'; },
+        shipFree: 'التوصيل مجاني.',
+        shipPickup: 'الاستلام من مقرنا، وسنرسل لحضرتك العنوان ومواعيد الاستلام.',
+        shipAdd: function (c) { return 'مصاريف الشحن ' + c + ' جنيه، وتُضاف إلى سعر المنتج.'; },
+        shipUnknown: 'تُحدَّد مصاريف الشحن حسب العنوان، برجاء إرسال المحافظة والمنطقة لنبلغ حضرتك بالمبلغ.',
+        discYes: function (o, pr) { return 'السعر الحالي بعد الخصم بالفعل (كان ' + o + ' جنيه) ويبلغ ' + pr + ' جنيه.'; },
+        discNo: function (pr) { return 'نشكر لحضرتك ذوقك، السعر الحالي للمنتج ' + pr + ' جنيه.'; },
+        bulk: 'عند طلب أكثر من قطعة، برجاء إرسال العدد المطلوب لنوافي حضرتك بأفضل سعر ممكن.',
+        orderIntro: function (p) { return 'لتأكيد طلب ' + p + ' برجاء إرسال:'; },
+        follow: function (p) { return ['نتواصل مع حضرتك مجددًا بخصوص ' + p + '.', 'ونحن في خدمتكم لأي استفسار أو لإتمام الطلب.']; }
+      },
+      cta: 'للطلب برجاء مراسلتنا على الخاص.',
+      hook: function (p) { return 'هل تبحث عن ' + p + '؟'; },
+      head3: function (p) { return 'يسعدنا استقبال طلباتكم على ' + p; },
+      limited: 'الكمية محدودة.',
+      free: 'التوصيل مجاني.', pickup: 'الاستلام من مقرنا.',
+      paid: function (c) { return 'مصاريف الشحن ' + c + ' جنيه.'; },
+      paidUnknown: 'تُحدَّد مصاريف الشحن حسب العنوان.',
+      contact: function (w) { return 'للتواصل عبر واتساب: ' + w; } },
+    hype: { label: 'حماسي', mark: '🔥', hi: 'يا أهلاً يا أهلاً! 🔥',
+      r: {
+        availQ: 'أسجلك الطلب دلوقتي؟ 🔥', contQ: 'نكمل الطلب؟ 🔥',
+        avail: function (p, pr) { return p + ' متاح وسعره ' + pr + ' جنيه'; },
+        priceIs: function (p, pr) { return 'سعر ' + p + ': ' + pr + ' جنيه'; },
+        shipFree: 'التوصيل مجاني! 🚚',
+        shipPickup: 'الاستلام من مكاننا، ابعتلي وأبعتلك العنوان ومواعيد الاستلام.',
+        shipAdd: function (c) { return 'الشحن ' + c + ' جنيه، وبيتضاف على سعر المنتج.'; },
+        shipUnknown: 'مصاريف الشحن بتتحدد حسب العنوان، ابعتلي المحافظة والمنطقة وأقولك المبلغ.',
+        discYes: function (o, pr) { return 'السعر ده بعد الخصم أصلاً (كان ' + o + ' جنيه) وبقى ' + pr + ' جنيه بس! 🔥'; },
+        discNo: function (pr) { return 'شكرًا لذوقك، ' + pr + ' جنيه هو السعر الحالي للمنتج.'; },
+        bulk: 'خد أكتر من قطعة وقولي العدد، وأشوفلك أحسن سعر ممكن!',
+        orderIntro: function (p) { return 'تمام! عشان نأكد طلب ' + p + ' ابعتلي:'; },
+        follow: function (p) { return ['رجعتلك بخصوص ' + p + '!', 'لو ليك أي سؤال أو عايزين نكمل الطلب، أنا موجود! 🔥']; }
+      },
+      cta: 'الحق ابعتلنا على الخاص واطلب دلوقتي!',
+      hook: function (p) { return 'نفسك في ' + p + '؟ جه الوقت! 🔥'; },
+      head3: function (p) { return 'الطلب مفتوح على ' + p + '! 🔥'; },
+      limited: 'الكمية محدودة! الحق احجز قبل ما تخلص! ⏳',
+      free: 'التوصيل مجاني! 🚚', pickup: 'الاستلام من مكاننا.',
+      paid: function (c) { return 'مصاريف الشحن ' + c + ' جنيه.'; },
+      paidUnknown: 'مصاريف الشحن بتتحدد حسب العنوان.',
+      contact: function (w) { return 'واتساب: ' + w; } }
+  };
+
+  var BASE_TAGS = ['تسوق_اونلاين', 'مصر'];
+
+  function productTag(product) {
+    var t = product.trim().split(/\s+/).slice(0, 2).join('_').replace(/[^\p{L}\p{N}_]/gu, '');
+    return t.replace(/^_+|_+$/g, '');
+  }
+
+  function buildHashtags(product, catKey) {
+    var list = [productTag(product)].concat(CATEGORIES[catKey].tags, BASE_TAGS).filter(Boolean);
+    var seen = {}, out = [];
+    list.forEach(function (t) { if (!seen[t]) { seen[t] = 1; out.push('#' + t); } });
+    return out.slice(0, 8).join(' ');
+  }
+
+  /* ---------- التحقق من المدخلات ---------- */
+  function validate(input) {
+    var errors = {};
+    var product = String(input.product == null ? '' : input.product).trim().replace(/\s+/g, ' ');
+    if (!product) errors.product = 'اكتب اسم المنتج.';
+    else if (product.length > 80) errors.product = 'اسم المنتج طويل، خليه أقل من 80 حرف.';
+
+    var price = parseNumber(input.price);
+    if (price === null) errors.price = 'اكتب سعر المنتج.';
+    else if (isNaN(price)) errors.price = 'السعر لازم يكون أرقام بس، مثال: 350';
+    else if (price <= 0) errors.price = 'السعر لازم يكون أكبر من صفر.';
+    else if (price > 1000000) errors.price = 'السعر كبير جدًا، راجعه تاني.';
+
+    var oldPrice = parseNumber(input.oldPrice);
+    if (oldPrice !== null) {
+      if (isNaN(oldPrice)) errors.oldPrice = 'السعر قبل الخصم لازم يكون أرقام بس.';
+      else if (typeof price === 'number' && !isNaN(price) && price > 0 && oldPrice <= price) errors.oldPrice = 'السعر قبل الخصم لازم يكون أكبر من السعر الحالي.';
+      else if (oldPrice > 1000000) errors.oldPrice = 'السعر كبير جدًا، راجعه تاني.';
+    }
+
+    var shipping = input.shipping || 'free';
+    if (['free', 'paid', 'pickup'].indexOf(shipping) === -1) errors.shipping = 'اختار طريقة الشحن.';
+    var shippingCost = parseNumber(input.shippingCost);
+    if (shipping === 'paid' && shippingCost !== null) {
+      if (isNaN(shippingCost)) errors.shippingCost = 'مصاريف الشحن لازم تكون أرقام بس.';
+      else if (shippingCost > 100000) errors.shippingCost = 'مصاريف الشحن كبيرة جدًا، راجعها تاني.';
+    }
+
+    var wa = normalizeWhatsapp(input.whatsapp);
+    if (wa === '') errors.whatsapp = 'رقم الواتساب لازم يكون 11 رقم ويبدأ بـ 01، مثال: 01012345678';
+
+    if (!CATEGORIES[input.category]) errors.category = 'اختار نوع المنتج.';
+    if (!TONES[input.tone]) errors.tone = 'اختار أسلوب الكلام.';
+
+    if (Object.keys(errors).length) return { ok: false, errors: errors };
+    var hasDiscount = oldPrice !== null && oldPrice > price && Math.round((oldPrice - price) / oldPrice * 100) >= 1;
+    return {
+      ok: true,
+      value: {
+        product: product, price: price, oldPrice: hasDiscount ? oldPrice : null,
+        pct: hasDiscount ? Math.round((oldPrice - price) / oldPrice * 100) : 0,
+        shipping: shipping,
+        shippingCost: shipping === 'paid' && shippingCost !== null && !isNaN(shippingCost) ? shippingCost : null,
+        whatsapp: wa, category: input.category, tone: input.tone, limited: !!input.limited
+      }
+    };
+  }
+
+  /* ---------- التوليد ---------- */
+  function shippingLine(v, T) {
+    if (v.shipping === 'free') return T.free;
+    if (v.shipping === 'pickup') return T.pickup;
+    return v.shippingCost !== null ? T.paid(fmt(v.shippingCost)) : T.paidUnknown;
+  }
+
+  function priceLine(v, withPct) {
+    var s = 'السعر: ' + fmt(v.price) + ' جنيه';
+    if (v.oldPrice !== null) s += ' بدل ' + fmt(v.oldPrice) + ' جنيه' + (withPct ? ' (خصم ' + v.pct + '%)' : '');
+    return s;
+  }
+
+  function generate(input) {
+    var check = validate(input);
+    if (!check.ok) return check;
+    var v = check.value;
+    var T = TONES[v.tone], C = CATEGORIES[v.category];
+    var tags = buildHashtags(v.product, v.category);
+    var contact = v.whatsapp ? T.contact(v.whatsapp) : '';
+    var ship = shippingLine(v, T);
+    var mark = T.mark ? T.mark + ' ' : '';
+    var join = function (lines) { return lines.filter(Boolean).join('\n'); };
+    var finish = function (lines) { return join(lines) + '\n\n' + tags; };
+
+    var posts = [
+      { title: 'منشور عرض مباشر', text: finish([
+        mark + v.product, priceLine(v, true), C.line[v.tone], ship, T.cta, contact]) },
+      { title: 'منشور بسؤال يجذب الانتباه', text: finish([
+        T.hook(v.product),
+        v.product + ' بـ ' + fmt(v.price) + ' جنيه' + (v.oldPrice !== null ? ' بدل ' + fmt(v.oldPrice) + ' جنيه' : '') + '.',
+        ship, T.cta, contact]) },
+      { title: v.oldPrice !== null ? 'منشور خصم' : 'منشور حجز الطلبات', text: finish([
+        mark + (v.oldPrice !== null ? 'خصم ' + v.pct + '% على ' + v.product : T.head3(v.product)),
+        priceLine(v, v.oldPrice === null), v.limited ? T.limited : '', ship, T.cta, contact]) }
+    ];
+
+    var R = T.r;
+    var discTail = v.oldPrice !== null ? ' (بدل ' + fmt(v.oldPrice) + ' جنيه)' : '';
+    var shipDetail;
+    if (v.shipping === 'free') shipDetail = R.shipFree;
+    else if (v.shipping === 'pickup') shipDetail = R.shipPickup;
+    else if (v.shippingCost !== null) shipDetail = R.shipAdd(fmt(v.shippingCost));
+    else shipDetail = R.shipUnknown;
+
+    var shipOrder, totalLine = '';
+    if (v.shipping === 'free') { shipOrder = 'الشحن: مجاني'; totalLine = 'الإجمالي: ' + fmt(v.price) + ' جنيه'; }
+    else if (v.shipping === 'pickup') { shipOrder = 'الاستلام: من مكاننا'; totalLine = 'الإجمالي: ' + fmt(v.price) + ' جنيه'; }
+    else if (v.shippingCost !== null) {
+      shipOrder = 'الشحن: ' + fmt(v.shippingCost) + ' جنيه';
+      totalLine = 'الإجمالي: ' + fmt(Math.round((v.price + v.shippingCost) * 100) / 100) + ' جنيه';
+    } else { shipOrder = 'الشحن: يتحدد حسب العنوان'; }
+
+    var replies = [
+      { label: 'لما حد يسأل: المنتج متاح؟', text: join([
+        T.hi, R.avail(v.product, fmt(v.price)) + discTail + '.', R.availQ]) },
+      { label: 'لما حد يسأل: بكام؟', text: join([
+        T.hi, R.priceIs(v.product, fmt(v.price)) + discTail + '.', shipDetail, R.contQ]) },
+      { label: 'لما حد يسأل: الشحن بكام؟', text: join([T.hi, shipDetail]) },
+      { label: 'لما حد يطلب خصم', text: join([
+        T.hi,
+        v.oldPrice !== null ? R.discYes(fmt(v.oldPrice), fmt(v.price)) : R.discNo(fmt(v.price)),
+        R.bulk]) },
+      { label: 'لتأكيد الطلب وأخذ البيانات', text: join([
+        T.hi, R.orderIntro(v.product),
+        '- الاسم بالكامل', '- رقم الموبايل', '- المحافظة والعنوان بالتفصيل']) + '\n\n' +
+        join(['سعر المنتج: ' + fmt(v.price) + ' جنيه', shipOrder, totalLine]) },
+      { label: 'متابعة لو العميل سكت', text: join([T.hi].concat(R.follow(v.product))) }
+    ];
+
+    return { ok: true, posts: posts, replies: replies, hashtags: tags };
+  }
+
+  return {
+    toLatinDigits: toLatinDigits, parseNumber: parseNumber, fmt: fmt,
+    normalizeWhatsapp: normalizeWhatsapp, toWaNumber: toWaNumber,
+    sha256Hex: sha256Hex, normalizeCode: normalizeCode, codeHash: codeHash, isValidCode: isValidCode,
+    CATEGORIES: CATEGORIES, TONES: TONES, validate: validate, generate: generate, buildHashtags: buildHashtags
+  };
+});
+
+</script>
+<script>
+(function () {
+  'use strict';
+  var CONFIG = {"wa":"01144270486","priceEgp":149};
+  var HASHES = ["daaed0aad76cd0f4798b3416544c6785787665ec5025f3437b943207735c99a7","12a54553a1c66a3bf78b0c437e313c3c4dcc66af15cd18171157d99cd9363c35","f7ff034fb24c6ca8673890edb97d1ccdcc00b5043e48f2a1500712b2bc0c6bb2","895019cf26235ac81e0b7b2fdf543287bda9f7be53188c3d7fce88a0c4391655","5733d33e8b966e20bd231c3d6ecae0b3a84bebee9baf4f0e2a43c59d1a14e337","b80866aa3e6e241d53a98e2b358997ce80d653216980d935abc44b53cb6b6d21","1475f5d061042851a19b5bfd9677e3a5dc61c0df09c7c61cebc6de6eaf4d08c9","58ef374540f1803c742e6b8d947ac363fccdd7dfcf7fc1eb538dbe8db7c32410","9168dafc92c8f3c5282381e0b4f393cefc3681f8ea55f83ba6cf535e23df9c11","f3c50377b52e6f8dd2638305f5f1316bdded8ed9c1f6fa4c78da5df42e4d40d1","f59fca74f407c5373b581b82a5d63088e7fda6323f0f0ac6d53fd94dfc204b12","516073387ac7a33a61377d3682543e5a1552c5f0abf6616e1ec73d6a5f4f7b87","809545b154aa408c249bc3579ba156b5d6cadeac0a7613aa54c790fcfdc7dc30","d08dbd1d936ea53d74c3e6cc6f1e00fa12272ed6e893d682ceb17c6c403c9b65","c47b31c52d45f1cfe6488796ad037665cc4cfb362f0e558b9c1d736735ba151b","9e7f57073cbcd298ac62c9908be40d857960b9f6b29a3a26513221b8e1bb0545","a4ecd88b6d4fa944520dab00a342d69bf0816287c6bc88fc08e96a649713d515","216e679dab0196a9f7016206e5653b55640974dfd877260dd318f33b11ebb40d","d33d9bb4b40376827bba2548ec468366cb30433e0a9a36955629eb93f872604e","74ed99945caba8cff325d1881284f3c0e2a6cc0295ca831cb5dee90fc0566ad2","0f876cf6128cd754d2c1464a017f2e795f3cd6dd6004cb977625dc8d7656be8d","2746d7cae5241388b0253816fafc46660f8aca875692e7fb8e3f79b0a2cb125b","939f4c84307b1faa5611c9197d4b4731c28c77f5d6a21d67f2c6218eae2fe687","8dd5e33514c02a6667fd472d0851b36c88081518585d4b9180a3019b7990eed8","7aff761330bd941842108f51614b8a9079c11c6e8bfc121cae8414101c2b4878","7d3285b95765bbb462df563743826d0a8f3babdf827ee791b4b02df67f818610","23c5575ade779143e96d9d2cc19ca438ddfb7dc7216b23f5d5d565c4c5d34a27","7039d308d83e5f1bc207d333fbe3ef65e7e29c3133922ee909ffb1e3f7ed164b","94d5bbe87afb2b042337bddf5bc6493d453d5f47427d7e4760aeaa1afac25e65","3371cbf1744ce2106291ac7ebb4b405190c990a319ff81ab17e6bed9a9bbca3d","c96d6574e72466d94600840e08f7adf4a63c48e8bed2ac594da0e9b45ab13316","34380e66d7481c749d375534f1cc6c784e4337cf548c325e2f7229e66d85832f","52ec2e8229eaba62cf04cc06d13ffb600e6699b70c06ef00b41121fed960ad70","697fc029075f27bd01c66f9c7379a924569e64c05ee92edacaa62f8778cf742f","5267c3642ae6f906cb5a8b7ad6de2feaac61c31ccaf0fa725ce7aacf8c8e8c80","dcf811923a750e951583ec79285c2d8fd1727c644ed9e82fe650d0a23c34f449","3fd127707ff0a15a26fa91df2c69f4057616908450bdf482fc3bb5a11bce23f2","b2a38d211729673b6e10ebb4981e9cf56378dc6ef4e312d9978b283f5ccfd08e","1a12ba51efa753797cf6334c1da6b860cd46f1aaaa577d84420f41b24ebff99c","6cf1d228d011c29f2a7ff1f3066d99c1ca921f7e9c235071aa8bc82dbf5cc62c","ef48792def9b66f206e2e6ce480d3713e85a680fbaf7caf2c95bcc3f8327376f","2f9c6c954ba9508c2be0a6491ec028d78b3ff148c083ef759f59a943c2c1a8fa","4b312dd52742bfa689a976dcb704d6ac28d8b56b5e46c3b095349a6e4ae00ba3","e0c281b6dfc5f6bd7b25a792bbf01664bd9ed81eea819d5a5ce3c002ac25735b","6ca022fbaaf419a81a7ffb8960c653bb2564f9f82dbaecb3ad614f86fc8ad2be","f9ba5670801f04d250631e2224c11e849c38a9ad987eef2f7429391b6f54e71a","c6d921d89e52f2bf6a5470f58967be4acac91126bc3f9be93330883a50546e87","31561f93b4754e5af1345b895776261cf8565d64dedbd34e3f72f37c208c4fbe","a9a0bcbcb2159e5e6adfb52f53e21f09d46cda29b3df633385bf06e8d954faf0","651bf384f0f6353a98d8b3a7e5c900ff5ba39a25fa3479fbf29d13b19516e93c","3bb03bc4bbdbda56e2dc2b199b5eb073e5f83540ca8f69a3ee83a067e594d44c","9d5dd250271c2856364769a78f83c4d2541d20832a397dbe8c102b1a032c6555","2522e79d30d4b2e745aa5edf3fc47d75d7352dab89391b31691b3eb5d2e01392","7b72d5a347366f2833423accb1a9a4871014908d05e7dfe85fd0d7572c05467e","3c7dd0f5749b3ac7ac6d71f25b348ecdb651f5f798835677f67f81e979f0cc96","5b634b4918ec159860f05d1fa55d722d25cdfeeba478fbdae0474a1b63bab644","d81cc93c619e148317f8190a4204c40f6069aebe22a81131e829fa15542d8e57","817a68d90ed84872bfc103ef462dbd1c52506019481d812eb0445b2966eb6626","503fdef3a0a86b397ce61ae3a1f2c747b487a6cbe440851682aaec4ce401d232","ca07e93d128e134b5fc03e04c94a02b360300d23fb8583b4169d7b47e230feb1","6be534038a1c4ade1638d637955bc7be8fdc1700d0d9c33d553e3f81b1285579","29c1d2a154167250bac836499fb23c9e5d1c8c57c8d8bf3cd7b1aa19e7294da9","4a7f70102b82c1ec1e8a4cb8556608b578dbc847dd90c38744715649f26fc570","91a60d9cd3175ba3348b254e85f1c1123d683b82b67380fd4d79114f709484b5","a6fcebbaa6386d2706e827da76252995367e793c12e99988f425bc7320407053","fdde5f7dadb4b594c7af858f92170ebec50a7992c78524013e1e9a093ec624be","04df6b810cbb57ad527b66eb0dfcb535d7b5b5fe24ebc6bb15cdcbb50cf14fa5","83a310899f58bb2472c411ece6a609ba9e1c98e09b6f8f49b43a445a1dcc07c5","31f35bf74e59c1493324a79b6b3d93204fc2c005f162c3abfada0c4ab99d4317","b1c433b6af7fb6ef9360a1edbea4aa68402ab5c5d2d271fee8453ac536ad03b7","e2ba13687495b3561fc3ec36b97f1f0e0849842698ebdddc0f256618da40d531","9841c440460fb48c08852ec352dafe1e19d0cdb8018e5c34ce96ffcfb4d456a0","5fc628374e0a77fd2b88c3ee7074a98cc244d35cb4a8c49775867126249652ba","f270092cea4fd873199860f5859b0d88fe8d83885ae16c26534307437321d2bc","de36c61828a8a6052acb337f7377d8bfba3cb56f5866808e4d426b7306faa777","985134576c50cdd96755f9fdbcdbbb9a20b124cf8b1bdff3f3138e21812ca014","de215f9ffeaac3ba9853c8383e5183d323484d6138f640a26812b5640c6eca1c","c2be7ef89fa4befb51d81d68418b7200ad4a161db22ba3c9a1168278e7f8ec47","178d729153b54392d8d2fcc620e3d3030e82c0fce89a1a7b443edcda91971532","9b660481100b59b8d44385638ac4daeefeb260414d2343505932776a1ce8936b","f576497532401c04b98e2f77813f06932838d90d255a2af99528f403750eb271","8801235d8916e874c12157400180cdf2010826ddfa9bc7c6f690b6aa7a417aac","db0eded1b149a8972d6564dfcf2d94b0681b689445323e0da7cbc102702414d6","606b8d8ad3ce4dbada8af29eaf02db9efb545fb9f2d8a6dc2cb107d3d23e3ca9","cd3688199bed15f07d7cb05622c73439c33737a4fa34106f71f7a9ef9b9581ac","7c604f3a857bc2a8f5f88ef4fea129233adccdf6cce29436b58126641457146f","457683975d0ad71c381386a4c2d95020decdddf36afc4b42e8838b3bf5f638e1","e7ca86f09e1002c33ca634b3de72e423bbdb7c9f7cdc99a67622d33282a1b686","d48aefbe09ce64ac1c804283c384fc4a0a024a0fbff1d1a940fc2170c6f2046e","b83c372bc301d56c4edcbf3b63353f0b8ce3445dc1eb055dcf88da6229f4f0e6","61a2322d7eb08464f73fc9ed3ea2e1c6b55d0896b0d5c2a7babe592ae10fb8af","c7ca25e815dae16a246aa34dbb26491e8796d1a4875ac7be5d69a28ac4085ca4","dc509a8fe529207aa36a0552c85604fa8c5702cc1528af96c2645920ca9b8152","2efe948fde4f86944a1698028b38b903d7b557ad75b8a0dcf8438199fbaa3a97","80e076003b62b9942e32eee441311066c5f2ea1431fd66a3cc75a3a46992f6a5","ed38c8c0cf67a036b700a929ffed38fdb6ef912be75df95a506226c9bbcd25f6","1170cc98d6670b8d4424cb69d50522df55582c6be66f7ec4c95b24ae4b147323","635cb2a2e816674ba3abc5ec49aac4afbaf7618044a45a1712429c466219a82b","b5b8984ed0df2a72c66ef8e14f61ceaff12d52a3a4696c5407a3f624bc789b32","001680e119abe6671d84cd12df4cdf0608672372ba3e1002388269a98ea86387"];
+  var STORE_KEY = 'pg_unlock_v1';
+  var $ = function (id) { return document.getElementById(id); };
+  var unlocked = false;
+  var last = null;
+
+  function readStore() {
+    try { var h = localStorage.getItem(STORE_KEY); return h && HASHES.indexOf(h) !== -1; } catch (e) { return false; }
+  }
+  function writeStore(h) { try { localStorage.setItem(STORE_KEY, h); } catch (e) { /* التفعيل يفضل شغال في الجلسة دي */ } }
+
+  function selectNode(node) {
+    try {
+      var r = document.createRange(); r.selectNodeContents(node);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    } catch (e) { /* مفيش حاجة نعملها */ }
+  }
+
+  function copyText(text, btn, pre) {
+    var label = btn.getAttribute('data-label');
+    var finish = function (ok) {
+      btn.textContent = ok ? 'تم النسخ' : 'حدّد النص وانسخه';
+      if (!ok) selectNode(pre);
+      clearTimeout(btn._t);
+      btn._t = setTimeout(function () { btn.textContent = label; }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try { navigator.clipboard.writeText(text).then(function () { finish(true); }, function () { finish(false); }); }
+      catch (e) { finish(false); }
+    } else { finish(false); }
+  }
+
+  function el(tag, cls, text) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function buildCard(title, text, locked) {
+    var card = el('article', 'card' + (locked ? ' locked' : ''));
+    var head = el('div', 'card-head');
+    head.appendChild(el('h3', null, title));
+    if (locked) {
+      head.appendChild(el('span', 'lock-badge', 'مقفول'));
+      card.appendChild(head);
+    } else {
+      var btn = el('button', 'btn small', 'نسخ');
+      btn.type = 'button'; btn.setAttribute('data-label', 'نسخ');
+      head.appendChild(btn);
+      card.appendChild(head);
+      var pre = el('pre', null, text);
+      card.appendChild(pre);
+      btn.addEventListener('click', function () { copyText(text, btn, pre); });
+    }
+    return card;
+  }
+
+  function render(res) {
+    var posts = $('posts'), replies = $('replies');
+    posts.textContent = ''; replies.textContent = '';
+    res.posts.forEach(function (p, i) { posts.appendChild(buildCard(p.title, p.text, !unlocked && i > 0)); });
+    res.replies.forEach(function (r, i) { replies.appendChild(buildCard(r.label, r.text, !unlocked && i > 0)); });
+  }
+
+  var ERR_KEYS = ['product', 'price', 'oldPrice', 'category', 'tone', 'shipping', 'shippingCost', 'whatsapp'];
+  function showErrors(errors) {
+    var first = null;
+    ERR_KEYS.forEach(function (k) {
+      var p = $('err-' + k), input = $(k);
+      var msg = errors[k] || '';
+      p.textContent = msg; p.hidden = !msg;
+      if (input) { if (msg) { input.setAttribute('aria-invalid', 'true'); if (!first) first = input; } else input.removeAttribute('aria-invalid'); }
+    });
+    if (!first && errors.tone) first = document.querySelector('input[name="tone"]');
+    if (first) first.focus();
+  }
+
+  function readInput() {
+    var tone = document.querySelector('input[name="tone"]:checked');
+    return {
+      product: $('product').value, price: $('price').value, oldPrice: $('oldPrice').value,
+      category: $('category').value, tone: tone ? tone.value : '',
+      shipping: $('shipping').value, shippingCost: $('shippingCost').value,
+      whatsapp: $('whatsapp').value, limited: $('limited').checked
+    };
+  }
+
+  function run(isUser) {
+    var res = PG.generate(readInput());
+    if (!res.ok) { showErrors(res.errors); return; }
+    showErrors({});
+    last = res;
+    render(res);
+    if (isUser) $('example-note').hidden = true;
+  }
+
+  function syncShipping() { $('shippingCostField').hidden = $('shipping').value !== 'paid'; }
+
+  function setUnlockedUI() {
+    var plan = $('plan');
+    plan.textContent = unlocked ? 'مفعّل' : 'النسخة المجانية';
+    plan.className = 'plan' + (unlocked ? ' on' : '');
+    $('unlock-done').hidden = !unlocked;
+    $('unlock-open').hidden = unlocked;
+    $('unlock-cta').hidden = unlocked;
+  }
+
+  $('goto-unlock').addEventListener('click', function () {
+    var calm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    $('unlock').scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+    $('code').focus({ preventScroll: true });
+  });
+
+  $('form').addEventListener('submit', function (e) { e.preventDefault(); run(true); });
+  $('shipping').addEventListener('change', syncShipping);
+
+  $('code-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var status = $('code-status');
+    var v = $('code').value;
+    if (PG.isValidCode(v, HASHES)) {
+      unlocked = true;
+      status.className = 'status'; status.textContent = '';
+      writeStore(PG.codeHash(v));
+      setUnlockedUI();
+      if (last) render(last);
+    } else {
+      status.className = 'status bad';
+      status.textContent = v.trim() === ''
+        ? 'اكتب الكود الأول.'
+        : 'الكود ده مش صحيح. اتأكد إنك كتبته زي ما وصلك، وإن مفيش حرف ناقص. لو لسه المشكلة موجودة ابعتلنا على واتساب.';
+    }
+  });
+
+  /* بيانات البيع */
+  $('price-sticker').textContent = CONFIG.priceEgp + ' جنيه';
+  $('wa-num').textContent = CONFIG.wa;
+  var msg = 'أهلاً، كود تفعيل أداة بوست جاهز (' + CONFIG.priceEgp + ' جنيه): الدفع بيتم إزاي؟';
+  $('wa-link').href = 'https://wa.me/' + PG.toWaNumber(CONFIG.wa) + '?text=' + encodeURIComponent(msg);
+
+  unlocked = readStore();
+  syncShipping();
+  setUnlockedUI();
+  run(false);
+})();
+</script>
+
+</body>
+</html>
